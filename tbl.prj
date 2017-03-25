@@ -1,0 +1,20 @@
+;;; VLisp project file [V2.0] tbl saved to:[F:/project/tbl] at:[2/22/16] 
+(VLISP-PROJECT-LIST
+  :NAME
+  tbl
+  :OWN-LIST
+  ("row" "table"      "measurement"		"type-testers"
+	 "arc"	      "estr"	   "linalg"	"line"
+	 "main"	      "num"	   "setup"	"ucs"
+	 "util"
+	)
+  :FAS-DIRECTORY
+  "F:\\project\\tbl"
+  :TMP-DIRECTORY
+  nil
+  :PROJECT-KEYS
+  (:BUILD (:standard) :MERGED T :SAFE-MODE T :MSGLEVEL 1)
+  :CONTEXT-ID
+  :AUTOLISP
+)
+;;; EOF
