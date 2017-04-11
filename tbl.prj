@@ -1,20 +1,15 @@
-;;; VLisp project file [V2.0] tbl saved to:[F:/project/tbl] at:[2/22/16] 
-(VLISP-PROJECT-LIST
-  :NAME
+;;; VLisp project file [V2.0] tbl saved to:[D:/work/Cloud Mail.Ru/project/tbl] at:[4/12/17] 
+(vlisp-project-list
+  :name
   tbl
-  :OWN-LIST
-  ("row" "table"      "measurement"		"type-testers"
-	 "arc"	      "estr"	   "linalg"	"line"
-	 "main"	      "num"	   "setup"	"ucs"
-	 "util"
-	)
-  :FAS-DIRECTORY
-  "F:\\project\\tbl"
-  :TMP-DIRECTORY
+  :own-list
+  ("row" "table" "measurement" "type-testers" "arc" "estr" "linalg" "line" "main" "num"	"setup"	"ucs" "util")
+  :fas-directory
+  "D:\\work\\Cloud Mail.Ru\\project\\tbl"
+  :tmp-directory
   nil
-  :PROJECT-KEYS
-  (:BUILD (:standard) :MERGED T :SAFE-MODE T :MSGLEVEL 1)
-  :CONTEXT-ID
-  :AUTOLISP
-)
+  :project-keys
+  (:build (:standard) :merged t :safe-mode t :msglevel 1)
+  :context-id
+  :autolisp)
 ;;; EOF
