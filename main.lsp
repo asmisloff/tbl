@@ -321,6 +321,19 @@
     (setq pos (1+ pos)))
   (command "_regenall"))
 
+(defun layp  (pos pt margin / ent pt pos)
+  (setq ent (select-position pos))
+  (command "lay" ent "" pt)
+  (vla-addtext
+    (vla-get-modelspace (vla-get-activedocument (vlax-get-acad-object)))
+    (itoa pos)
+    (vlax-3d-point
+      (list
+        (- (car pt) margin)
+        (+ (cadr pt) margin)
+        (caddr pt)))
+    50))
+
 (defun c:layp  (/ ent pt pos)
   (setq pos (getint (strcat "Позиция (1.." (itoa (length *table*)) "): "))
         ent (select-position pos))
@@ -331,6 +344,21 @@
     (itoa pos)
     (vlax-3d-point (getpoint))
     50))
+
+(defun c:layall  (/ i len pt step)
+  (setq i    1
+        len  (length *table*)
+        pt   (getpoint "Точка вставки:")
+        step 2000)
+  (while (< i len)
+    (layp i
+          pt
+          100)
+    (setq i  (1+ i)
+          pt (list
+               (car pt)
+               (- (cadr pt) step)
+               (caddr pt)))))
 
 
 (defun c:mm  (/ s ss insp)

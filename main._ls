@@ -90,18 +90,18 @@
   (setq rp-cnt    0                     ; resopal panels count
         vn-cnt    0                     ; veneer panel count
         infer-art (lambda (row / mat doc-name room-number)
-                    (setq mat (row::material row)
-                          doc-name (vla-get-name (vla-get-ActiveDocument (vlax-get-acad-object)))
+                    (setq mat         (row::material row)
+                          doc-name    (vla-get-name (vla-get-activedocument (vlax-get-acad-object)))
                           room-number (substr doc-name 1 (- (strlen doc-name) 4)))
                     (cond ((vl-string-search "Resopal" mat)
                            (strcat room-number "-ПР-" (int->str (setq rp-cnt (1+ rp-cnt)))))
                           ((vl-string-search "шпон" mat)
                            (strcat room-number "-ПШ-" (int->str (setq vn-cnt (1+ vn-cnt)))))
                           (t index)))
-        int->str (lambda (i)
-                   (if (< i 10)
-                     (strcat "0" (itoa i))
-                     (itoa i))))
+        int->str  (lambda (i)
+                    (if (< i 10)
+                      (strcat "0" (itoa i))
+                      (itoa i))))
 
   (foreach row  tbl
     (setq index (vlax-get-property dwg-table 'rows))
@@ -270,6 +270,32 @@
           :vlax-true)))
     (princ "\nАктивная таблица пуста. Выполните команду tbl\n")))
 
+(defun select-position  (n)
+  (command "_regenall")
+  (if *table*
+    (progn
+      (setq handles (row::id
+                      (nth (1- n)
+                           *table*))
+            lss     (util::sset->list
+                      *last-selected-solids*)
+            s       (vl-remove-if-not
+                      '(lambda
+                         (solid / handle)
+                          (setq handle
+                                 (vla-get-handle
+                                   (vlax-ename->vla-object
+                                     solid)))
+                          (vl-some
+                            '(lambda (h)
+                               (= h handle))
+                            handles))
+                      lss))
+      (car s))
+    (progn
+      (princ "\nАктивная таблица пуста. Выполните команду tbl\n")
+      nil)))
+
 (defun c:hp  (/ pos)
   (setq pos (getint "\nНомер позиции: "))
   (if (and (<= pos (length *table*))
@@ -294,6 +320,18 @@
             (vla-put-textstring leader (itoa pos))))))
     (setq pos (1+ pos)))
   (command "_regenall"))
+
+(defun c:layp  (/ ent pt pos)
+  (setq pos (getint (strcat "Позиция (1.." (itoa (length *table*)) "): "))
+        ent (select-position pos))
+  (print ent)
+  (command "lay" ent "" (setq pt (getpoint)))
+  (vla-addtext
+    (vla-get-modelspace (vla-get-activedocument (vlax-get-acad-object)))
+    (itoa pos)
+    (vlax-3d-point (getpoint))
+    50))
+
 
 (defun c:mm  (/ s ss insp)
   (setup)
