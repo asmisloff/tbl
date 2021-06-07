@@ -131,7 +131,7 @@
         (if (not (null file))
           (close file))
         (setq last-material (row::material row)
-              file          (open (strcat "d:/ðàñêðîé\\" last-material ".obl") "w")
+              file          (open (strcat "z:/ðàñêðîé\\" last-material ".obl") "w")
               n             1)
         (write-line "Material 	Ïëèòà	Slab	" file)))
     (write-line
@@ -326,13 +326,20 @@
   (command "lay" ent "" pt)
   (vla-addtext
     (vla-get-modelspace (vla-get-activedocument (vlax-get-acad-object)))
-    (itoa pos)
+    (strcat "Ïîç. "
+            (itoa pos)
+            " -- "
+            (row::material (nth (1- pos) *table*))
+            " -- "
+            (itoa (row::qty (nth (1- pos) *table*)))
+            " øò.")
     (vlax-3d-point
       (list
         (- (car pt) margin)
         (+ (cadr pt) margin)
         (caddr pt)))
     50))
+
 
 (defun c:layp  (/ ent pt pos)
   (setq pos (getint (strcat "Ïîçèöèÿ (1.." (itoa (length *table*)) "): "))
@@ -341,7 +348,7 @@
   (command "lay" ent "" (setq pt (getpoint)))
   (vla-addtext
     (vla-get-modelspace (vla-get-activedocument (vlax-get-acad-object)))
-    (itoa pos)
+    (itoa pos) 
     (vlax-3d-point (getpoint))
     50))
 
@@ -350,7 +357,7 @@
         len  (length *table*)
         pt   (getpoint "Òî÷êà âñòàâêè:")
         step 2000)
-  (while (< i len)
+  (while (<= i len)
     (layp i
           pt
           100)
@@ -382,7 +389,6 @@
                "")
       (command "-insert" s insp "" "" "")
       (print s))))
-
- ;|«Visual LISP© Format Options»
+;|«Visual LISP© Format Options»
 (180 2 40 0 nil "end of " 100 9 1 1 0 nil T nil T)
 ;*** DO NOT add text below the comment! ***|;
